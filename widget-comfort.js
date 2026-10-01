@@ -71,7 +71,11 @@
 
     // ── CTA de compra no resultado (WooCommerce) — layout igual Gava/Cacife ──
     function getMainPrice() {
-        var el = document.querySelector('p.price ins .amount') || document.querySelector('p.price .amount, .price .amount');
+        // Só o preço do produto principal (.summary). O tema Glozin tem p.price no tooltip de
+        // "próximo/anterior produto" do breadcrumb, que vem antes no DOM e dava o valor errado.
+        var BAD = '.product-navigation,[class*="related"],[class*="upsell"],[class*="card"],li.product,#q-modal-ia';
+        var pick = function (sel) { var l = document.querySelectorAll(sel); for (var i = 0; i < l.length; i++) if (!l[i].closest(BAD)) return l[i]; return null; };
+        var el = pick('.summary .price ins .amount') || pick('.summary .price .amount') || pick('p.price ins .amount') || pick('p.price .amount');
         var t = el ? (el.textContent || '').trim() : '';
         return (t && /\d/.test(t)) ? t.replace(/\s+/g, ' ') : '';
     }
