@@ -958,11 +958,15 @@
             // sumia no scroll. Fica num "suporte" sticky de altura 0 no topo da galeria e acompanha a tela.
             const gal = document.querySelector('.woocommerce-product-gallery');
             if (gal && gal.querySelector('img')) {
+                // Desktop: a galeria já é sticky no Glozin → suporte dentro dela. Celular: a galeria rola,
+                // então o suporte vai no bloco do produto (foto + preço + comprar) e o selo fica na tela nele todo.
+                const mob = !window.matchMedia('(min-width: 768px)').matches;
+                const box = mob ? (gal.closest('.product-gallery-summary') || gal) : gal;
                 let hold = document.getElementById('pl-selo-holder');
                 if (!hold) {
                     hold = document.createElement('div'); hold.id = 'pl-selo-holder';
-                    hold.style.cssText = 'position:sticky;top:110px;height:0;z-index:30;pointer-events:none;';
-                    gal.insertBefore(hold, gal.firstChild);
+                    hold.style.cssText = 'position:sticky;top:' + (mob ? 76 : 110) + 'px;height:0;z-index:30;pointer-events:none;';
+                    box.insertBefore(hold, box.firstChild);
                 }
                 openBtn.style.pointerEvents = 'auto';
                 hold.appendChild(openBtn);
