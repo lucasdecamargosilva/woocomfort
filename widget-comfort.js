@@ -96,8 +96,8 @@
         var adicionou = false;
         if (sb) { try { sb.click(); adicionou = true; } catch (e) {} }
         if (adicionou) {
-            var _b = document.getElementById('q-btn-buy-now'); if (_b) _b.style.display = 'none';
-            var _s = document.getElementById('q-buy-success'); if (_s) _s.style.display = 'flex';
+            // Adiciona e fecha o provador (sem a mensagem "adicionado"): o tema abre o carrinho lateral.
+            try { closeModal(); } catch (e) {}
         } else {
             // Sem botao nativo para acionar, dizer "adicionado" seria mentira: leva ao Comprar da pagina.
             try { closeModal(); } catch (e) {}
