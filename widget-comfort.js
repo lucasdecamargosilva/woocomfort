@@ -954,6 +954,20 @@
         const imgContainers = ['.woocommerce-product-gallery__image', '.woocommerce-product-gallery__wrapper', '.woocommerce-product-gallery', '.flex-viewport', '.js-product-slide', '.product-image-column', '.js-swiper-product', '[data-store^="product-image-"]', '.product__media-wrapper', '.product-gallery__media', '.product__media', '.product-image-main', '.product-media-container', '[data-media-id]', '.product__media-item', '.product-gallery', '.product-single__media', '.media-gallery'];
 
         function tryPlaceTriggerBtn() {
+            // Selo FIXO: o Glozin empilha as fotos (desktop) / desliza (mobile); preso na 1ª foto o selo
+            // sumia no scroll. Fica num "suporte" sticky de altura 0 no topo da galeria e acompanha a tela.
+            const gal = document.querySelector('.woocommerce-product-gallery');
+            if (gal && gal.querySelector('img')) {
+                let hold = document.getElementById('pl-selo-holder');
+                if (!hold) {
+                    hold = document.createElement('div'); hold.id = 'pl-selo-holder';
+                    hold.style.cssText = 'position:sticky;top:110px;height:0;z-index:30;pointer-events:none;';
+                    gal.insertBefore(hold, gal.firstChild);
+                }
+                openBtn.style.pointerEvents = 'auto';
+                hold.appendChild(openBtn);
+                return true;
+            }
             // 1ª prioridade: container que tenha <img> dentro (evita cair em slide de vídeo)
             for (const sel of imgContainers) {
                 const els = document.querySelectorAll(sel);
