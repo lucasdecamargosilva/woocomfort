@@ -96,11 +96,15 @@
         var adicionou = false;
         if (sb) { try { sb.click(); adicionou = true; } catch (e) {} }
         if (adicionou) {
-            // Adiciona e fecha o provador (sem a mensagem "adicionado"): o tema abre o carrinho lateral.
-            try { closeModal(); } catch (e) {}
+            // Adiciona e fecha o provador (sem a mensagem "adicionado"). closeModal() vive dentro do init,
+            // fora do alcance daqui: fecha pelo X (que roda o closeModal de verdade) ou esconde o modal.
+            try {
+                var _x = document.querySelector('#q-close-btn, #q-modal-ia .q-close-btn, #q-modal-ia .q-close');
+                if (_x) _x.click(); else { var _m = document.getElementById('q-modal-ia'); if (_m) _m.style.display = 'none'; document.body.style.overflow = ''; }
+            } catch (e) {}
         } else {
             // Sem botao nativo para acionar, dizer "adicionado" seria mentira: leva ao Comprar da pagina.
-            try { closeModal(); } catch (e) {}
+            try { var _x2 = document.getElementById('q-close-btn'); if (_x2) _x2.click(); } catch (e) {}
             try {
                 var alvo = document.querySelector('form.cart') || document.querySelector('h1');
                 if (alvo && alvo.scrollIntoView) alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
