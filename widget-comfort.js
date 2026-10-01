@@ -310,7 +310,7 @@
             font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: 0; text-transform: none;
             cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.1s;
             box-shadow: none;
-            margin: 0 0 15px 0; box-sizing: border-box;
+            margin: 0 0 25px 0; /* o bloco de lentes do tema tem margin-top -10px */ box-sizing: border-box;
         }
         .q-btn-inline-provador:hover { background: var(--c-ink) !important; color: #fff !important; }
         .q-btn-inline-provador:active { transform: translateY(1px); }
