@@ -303,11 +303,11 @@
         /* ── Inline button ── */
         .q-btn-inline-provador {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 12px 16px; min-height: 44px;
+            width: 100%; padding: 12px 16px; min-height: 50px;
             background: transparent !important; color: var(--c-ink) !important;
-            border: 1px solid var(--c-ink) !important; border-radius: 5px !important;
+            border: 1px solid var(--c-ink) !important; border-radius: 30px !important; /* pílula, igual aos botões do tema Glozin */
             -webkit-appearance: none; appearance: none;
-            font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+            font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0; text-transform: none;
             cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.1s;
             box-shadow: none;
             margin-bottom: 12px; box-sizing: border-box;
