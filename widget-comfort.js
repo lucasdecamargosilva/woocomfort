@@ -1975,7 +1975,7 @@ const fd = new FormData();
    Os elementos originais (#q-result-prodprice / #q-result-installment) ficam no DOM,
    escondidos, porque outras partes do widget leem o texto deles. */
 (function () {
-    var PL_WA = '5511944537645';
+    var PL_WA = '5575982893096';
     if (window.__plResultLayout) return; window.__plResultLayout = 1;
     function $(id) { return document.getElementById(id); }
     function num(t) { var m = String(t || '').replace(/\s/g, '').match(/(\d{1,3}(?:\.\d{3})*|\d+),(\d{2})/); return m ? parseFloat(m[1].replace(/\./g, '') + '.' + m[2]) : 0; }
@@ -2093,6 +2093,10 @@ const fd = new FormData();
             var info = document.createElement('div'); info.id = 'q-result-prodinfo'; info.className = 'q-result-prodinfo'; info.style.cssText = 'text-align:left;margin-bottom:4px;';
             var nm = document.createElement('div'); nm.id = 'q-result-prodname'; nm.className = 'q-result-prodname'; nm.style.cssText = 'font-weight:700;color:var(--c-ink,#111);'; nm.textContent = pageName();
             var pr = document.createElement('div'); pr.id = 'q-result-prodprice'; var pv = pagePrice(); pr.textContent = pv ? brl(pv) : '';
+            // preço cheio riscado (Woo: <del> antes do <ins>) — o refresh mostra cheio riscado + promo + -%
+            try { var dl = null, dls = document.querySelectorAll('.summary .price del .amount'); for (var di = 0; di < dls.length && !dl; di++) { if (!dls[di].closest('#q-modal-ia,[class*="card"],[class*="related"],[class*="carousel"],[class*="swiper"]')) dl = dls[di]; }
+                var po = dl ? num(dl.innerText) : 0;
+                if (pv && po > pv) { pr.textContent = ''; var so = document.createElement('span'); so.className = 'q-pr-old'; so.textContent = brl(po); var sb = document.createElement('span'); sb.className = 'q-pr-big'; sb.textContent = brl(pv); pr.appendChild(so); pr.appendChild(document.createTextNode(' ')); pr.appendChild(sb); } } catch (e) {}
             var ins = document.createElement('div'); ins.id = 'q-result-installment'; ins.textContent = pageInstallment();
             info.appendChild(nm); info.appendChild(pr); info.appendChild(ins);
             var anchorTop = $('q-provas-restantes-result');
@@ -2129,7 +2133,7 @@ const fd = new FormData();
             var h = '';
             if (full > 0 && av > 0) {
                 var pct = Math.round((1 - av / full) * 100);
-                h += '<div class="pl-rl-old">' + brl(full) + '</div><div class="pl-rl-line"><div class="pl-rl-big">' + brl(av) + '</div>' + (pct > 0 ? '<span class="pl-rl-tag">-' + pct + '%</span>' : '') + '</div><div class="pl-rl-sub">à vista com desconto</div>';
+                h += '<div class="pl-rl-old">' + brl(full) + '</div><div class="pl-rl-line"><div class="pl-rl-big">' + brl(av) + '</div>' + (pct > 0 ? '<span class="pl-rl-tag">-' + pct + '%</span>' : '') + '</div><div class="pl-rl-sub">' + (oldEl ? 'preço promocional' : 'à vista com desconto') + '</div>';
             } else if (full > 0) {
                 h += '<div class="pl-rl-line"><div class="pl-rl-big">' + brl(full) + '</div></div>';
             } else if (pe.textContent) {
