@@ -307,10 +307,10 @@
             background: transparent !important; color: var(--c-ink) !important;
             border: 1px solid var(--c-ink) !important; border-radius: 30px !important; /* pílula, igual aos botões do tema Glozin */
             -webkit-appearance: none; appearance: none;
-            font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0; text-transform: none;
+            font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: 0; text-transform: none;
             cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.1s;
             box-shadow: none;
-            margin-bottom: 12px; box-sizing: border-box;
+            margin: 0 0 10px 0; box-sizing: border-box;
         }
         .q-btn-inline-provador:hover { background: var(--c-ink) !important; color: #fff !important; }
         .q-btn-inline-provador:active { transform: translateY(1px); }
@@ -1021,8 +1021,12 @@
         // Ancora logo ACIMA da linha quantidade+comprar (.ct-cart-actions no Blocksy).
         // Antes do form.cart inteiro ficava errado: o form começa nos swatches/frete.
         const cartRow = buyBtn ? buyBtn.closest('.ct-cart-actions, .woocommerce-variation-add-to-cart') : null;
-        const cartForm = document.querySelector('form.cart');
-        if (cartRow && cartRow.parentNode) {
+        const cartForm = document.querySelector('.summary form.cart') || document.querySelector('form.cart');
+        // Ótica Comfort (Glozin): vai logo ABAIXO do "Adicionar ao carrinho", no lugar
+        // e no estilo do botão "Desejo colocar lentes com grau".
+        if (cartForm && cartForm.parentNode) {
+            cartForm.parentNode.insertBefore(inlineBtn, cartForm.nextSibling);
+        } else if (cartRow && cartRow.parentNode) {
             cartRow.parentNode.insertBefore(inlineBtn, cartRow);
         } else if (buyBtn) {
             buyBtn.parentNode.insertBefore(inlineBtn, buyBtn);
@@ -1039,9 +1043,8 @@
         function plReanchorInline() {
             try {
                 var b = document.querySelector('.q-btn-inline-provador');
-                var buy = document.querySelector('form.cart .single_add_to_cart_button') || document.querySelector('.single_add_to_cart_button');
-                var row = buy ? buy.closest('.ct-cart-actions, .woocommerce-variation-add-to-cart') : null;
-                if (b && row && row.parentNode && b.nextElementSibling !== row) row.parentNode.insertBefore(b, row);
+                var f = document.querySelector('.summary form.cart') || document.querySelector('form.cart');
+                if (b && f && f.parentNode && f.nextElementSibling !== b) f.parentNode.insertBefore(b, f.nextSibling);
             } catch (e) {}
         }
         setTimeout(plReanchorInline, 600);
