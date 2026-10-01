@@ -120,6 +120,18 @@
         var prodName = ((document.querySelector('h1.product_title, h1') || {}).innerText || document.title || '').trim();
         var nameEl = document.getElementById('q-result-prodname'); if (nameEl) nameEl.textContent = prodName;
         var priceEl = document.getElementById('q-result-prodprice'); if (priceEl) priceEl.textContent = price || '';
+        // Woo em promoção: <del> = preço cheio. Vira "cheio riscado + promo + -%" no layout do resultado.
+        try {
+            var _dl = null, _dls = document.querySelectorAll('.summary .price del .amount');
+            for (var _di = 0; _di < _dls.length && !_dl; _di++) { if (!_dls[_di].closest('#q-modal-ia,[class*="card"],[class*="related"],[class*="carousel"],[class*="swiper"]')) _dl = _dls[_di]; }
+            var _n = function (s) { var m = String(s || '').replace(/\s/g, '').match(/(\d{1,3}(?:\.\d{3})*|\d+),(\d{2})/); return m ? parseFloat(m[1].replace(/\./g, '') + '.' + m[2]) : 0; };
+            if (priceEl && _dl && _n(_dl.innerText) > _n(price) && _n(price) > 0) {
+                priceEl.textContent = '';
+                var _so = document.createElement('span'); _so.className = 'q-pr-old'; _so.textContent = _dl.innerText.trim();
+                var _sb = document.createElement('span'); _sb.className = 'q-pr-big'; _sb.textContent = String(price).trim();
+                priceEl.appendChild(_so); priceEl.appendChild(document.createTextNode(' ')); priceEl.appendChild(_sb);
+            }
+        } catch (e) {}
         var instEl = document.getElementById('q-result-installment');
         if (instEl) { var _pe = document.querySelector('[class*="parcel"], .woocommerce-Price-installments'); var _i = _pe ? _pe.textContent.replace(/\s+/g, ' ').trim() : ''; if (!/\dx/.test(_i)) _i = ''; instEl.textContent = _i; instEl.style.display = _i ? 'block' : 'none'; }
         var info = document.getElementById('q-result-prodinfo'); if (info && (prodName || price)) info.style.display = 'block';
