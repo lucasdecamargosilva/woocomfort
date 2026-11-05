@@ -1,3 +1,5 @@
+/* Provador desligado em 05/11/2026 a pedido do Lucas. Religar = false. */
+window.PL_PROVADOR_OFF = true;
 /* PL tracing v2 (21/10/2026): avisa o painel de gestao (Tracing) quando a prova falha. Nao muda o fluxo do widget. */
 (function(){try{
 if(window.__PL_TRACE__)return;window.__PL_TRACE__=1;
@@ -52,6 +54,7 @@ setInterval(function(){var el=document.getElementById('q-step-error');if(!el)ret
     // ─── SEO BACKLINK BADGE (mini logo discreto pro crawler do Google) ───
     (function() {
         function injectPLBadge() {
+            if (window.PL_PROVADOR_OFF) return;
             try {
                 if (document.querySelector('.pl-seo-badge')) return;
                 var path = window.location.pathname;
@@ -938,6 +941,7 @@ setInterval(function(){var el=document.getElementById('q-step-error');if(!el)ret
 
 
     function init() {
+        if (window.PL_PROVADOR_OFF) return; // provador da Otica Comfort desligado
         // --- FILTRO DE CATEGORIA (HAT / RELÓGIO) ---
         const productNameNormalized = (document.querySelector('.product_title,h1.product__title,.product-single__title,h1')?.innerText || document.title).toUpperCase();
         if (productNameNormalized.includes('HAT')) {
